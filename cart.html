@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Amala Sky | Cart - Order Summary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Amala <span>Sky</span></a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="menu.html">Menu</a>
+                <a href="cart.html" class="active">Cart <span id="nav-cart-count" class="cart-badge">0</span></a>
+                <a href="contact.html">Contact</a>
+                <a href="menu.html" class="btn-order">Order Now</a>
+            </div>
+            <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>Your Cart</h1>
+            <p>Review your order before checkout</p>
+        </div>
+    </section>
+
+    <section class="cart-section">
+        <div class="container">
+            <div class="cart-grid">
+                <div class="cart-items" id="cart-items">
+                    <div class="empty-cart">Your cart is empty. <a href="menu.html">Browse Menu →</a></div>
+                </div>
+                <div class="order-summary-card">
+                    <h3>Order Summary</h3>
+                    <div class="summary-row" id="subtotal-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal">₦0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Delivery Fee</span>
+                        <span id="delivery-fee">₦0</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span id="total">₦0</span>
+                    </div>
+                    <button class="btn-checkout-full" onclick="proceedToCheckout()">Proceed to Checkout →</button>
+                    <a href="menu.html" class="btn-continue">Continue Shopping</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="modal">
+        <div class="modal-content">
+            <h2 class="modal-title">Complete Your Order</h2>
+            <div id="order-summary" class="order-summary"></div>
+            <div class="form-group">
+                <input type="text" id="customer-name" placeholder="Your Full Name" required>
+            </div>
+            <div class="form-group">
+                <input type="tel" id="customer-phone" placeholder="Phone Number" required>
+            </div>
+            <div class="form-group">
+                <select id="order-type">
+                    <option value="Delivery">Delivery</option>
+                    <option value="Pickup">Pickup</option>
+                </select>
+            </div>
+            <div class="form-group" id="address-field">
+                <input type="text" id="delivery-address" placeholder="Delivery Address">
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="closeCheckout()">Cancel</button>
+                <button class="modal-btn primary" onclick="submitOrder()">Send to WhatsApp →</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col"><h4>Amala Sky</h4><p>Authentic Nigerian cuisine made with love. Open 24/7.</p></div>
+                <div class="footer-col"><h4>Quick Links</h4><p><a href="index.html">Home</a></p><p><a href="menu.html">Menu</a></p><p><a href="contact.html">Contact</a></p></div>
+                <div class="footer-col"><h4>Contact</h4><p><i class="fas fa-phone"></i> +234 915 555 8923</p><p><i class="fab fa-whatsapp"></i> +234 915 555 8923</p></div>
+            </div>
+            <div class="footer-bottom"><p>© 2024 Amala Sky — Authentic Nigerian Cuisine | Open 24/7</p></div>
+        </div>
+    </footer>
+
+    <script src="cart-manager.js"></script>
+    <script>
+        const WHATSAPP_NUMBER = '2349155558923';
+
+        function displayCart() {
+            const cart = getCart();
+            const container = document.getElementById('cart-items');
+            
+            if (cart.length === 0) {
+                container.innerHTML = '<div class="empty-cart">Your cart is empty. <a href="menu.html">Browse Menu →</a></div>';
+                updateSummary(0);
+                return;
+            }
+            
+            // Group items
+            const grouped = {};
+            cart.forEach(item => {
+                if (!grouped[item.name]) {
+                    grouped[item.name] = { quantity: 0, price: item.price };
+                }
+                grouped[item.name].quantity += item.quantity;
+            });
+            
+            let subtotal = 0;
+            let html = '';
+            for (const [name, data] of Object.entries(grouped)) {
+                const itemTotal = data.price * data.quantity;
+                subtotal += itemTotal;
+                html += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <h4>${name}</h4>
+                            <div class="cart-item-price">₦${data.price.toLocaleString()} each</div>
+                        </div>
+                        <div class="cart-item-actions">
+                            <div class="quantity-control">
+                                <button onclick="updateQuantity('${name.replace(/'/g, "\\'")}', ${data.price}, -1)">-</button>
+                                <span>${data.quantity}</span>
+                                <button onclick="updateQuantity('${name.replace(/'/g, "\\'")}', ${data.price}, 1)">+</button>
+                            </div>
+                            <div class="cart-item-total">₦${itemTotal.toLocaleString()}</div>
+                            <button class="remove-btn" onclick="removeItem('${name.replace(/'/g, "\\'")}')">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+            updateSummary(subtotal);
+        }
+
+        function updateSummary(subtotal) {
+            const deliveryFee = 0; // Free delivery
+            const total = subtotal + deliveryFee;
+            document.getElementById('subtotal').innerHTML = `₦${subtotal.toLocaleString()}`;
+            document.getElementById('delivery-fee').innerHTML = `₦${deliveryFee.toLocaleString()}`;
+            document.getElementById('total').innerHTML = `₦${total.toLocaleString()}`;
+        }
+
+        function updateQuantity(name, price, change) {
+            let cart = getCart();
+            const existingIndex = cart.findIndex(item => item.name === name);
+            
+            if (existingIndex !== -1) {
+                const newQuantity = cart[existingIndex].quantity + change;
+                if (newQuantity <= 0) {
+                    cart.splice(existingIndex, 1);
+                } else {
+                    cart[existingIndex].quantity = newQuantity;
+                }
+            } else if (change > 0) {
+                cart.push({ name, price, quantity: 1 });
+            }
+            
+            saveCart(cart);
+            updateNavCartCount();
+            displayCart();
+        }
+
+        function removeItem(name) {
+            let cart = getCart();
+            cart = cart.filter(item => item.name !== name);
+            saveCart(cart);
+            updateNavCartCount();
+            displayCart();
+        }
+
+        function proceedToCheckout() {
+            const cart = getCart();
+            if (cart.length === 0) {
+                alert('Your cart is empty. Please add items to continue.');
+                return;
+            }
+            openCheckout();
+        }
+
+        function openCheckout() {
+            const cart = getCart();
+            const modal = document.getElementById('checkout-modal');
+            const summaryDiv = document.getElementById('order-summary');
+            
+            const grouped = {};
+            cart.forEach(item => {
+                if (!grouped[item.name]) {
+                    grouped[item.name] = { quantity: 0, price: item.price };
+                }
+                grouped[item.name].quantity += item.quantity;
+            });
+            
+            let total = 0;
+            let html = '';
+            for (const [name, data] of Object.entries(grouped)) {
+                const itemTotal = data.price * data.quantity;
+                total += itemTotal;
+                html += `<div class="summary-item"><span>${data.quantity}x ${name}</span><span>₦${itemTotal.toLocaleString()}</span></div>`;
+            }
+            html += `<div class="summary-total"><span>Total</span><span>₦${total.toLocaleString()}</span></div>`;
+            summaryDiv.innerHTML = html;
+            modal.classList.add('active');
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkout-modal').classList.remove('active');
+        }
+
+        function submitOrder() {
+            const name = document.getElementById('customer-name').value.trim();
+            const phone = document.getElementById('customer-phone').value.trim();
+            const orderType = document.getElementById('order-type').value;
+            const address = document.getElementById('delivery-address').value.trim();
+            
+            if (!name || !phone) {
+                alert('Please enter your name and phone number');
+                return;
+            }
+            
+            if (orderType === 'Delivery' && !address) {
+                alert('Please enter your delivery address');
+                return;
+            }
+            
+            const cart = getCart();
+            const grouped = {};
+            cart.forEach(item => {
+                if (!grouped[item.name]) {
+                    grouped[item.name] = { quantity: 0, price: item.price };
+                }
+                grouped[item.name].quantity += item.quantity;
+            });
+            
+            let orderDetails = '';
+            let total = 0;
+            for (const [name, data] of Object.entries(grouped)) {
+                const itemTotal = data.price * data.quantity;
+                total += itemTotal;
+                orderDetails += `${data.quantity}x ${name} - ₦${itemTotal.toLocaleString()}%0A`;
+            }
+            
+            let message = `*AMALA SKY - NEW ORDER*%0A%0A`;
+            message += `*Customer:* ${name}%0A`;
+            message += `*Phone:* ${phone}%0A`;
+            message += `*Order Type:* ${orderType}%0A`;
+            if (orderType === 'Delivery') {
+                message += `*Delivery Address:* ${address}%0A`;
+            }
+            message += `%0A*ORDER DETAILS:*%0A${orderDetails}%0A`;
+            message += `*TOTAL: ₦${total.toLocaleString()}*%0A%0A`;
+            message += `Thank you for choosing Amala Sky! 🍛`;
+            
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+            
+            // Clear cart
+            localStorage.removeItem('amalasky_cart');
+            updateNavCartCount();
+            closeCheckout();
+            displayCart();
+        }
+
+        document.getElementById('order-type')?.addEventListener('change', function() {
+            const addressField = document.getElementById('address-field');
+            addressField.style.display = this.value === 'Delivery' ? 'block' : 'none';
+        });
+        
+        document.getElementById('checkout-modal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeCheckout();
+        });
+        
+        document.querySelector('.mobile-menu-btn')?.addEventListener('click', function() {
+            const links = document.querySelector('.nav-links');
+            if (links.style.display === 'flex') links.style.display = 'none';
+            else {
+                links.style.display = 'flex';
+                links.style.flexDirection = 'column';
+                links.style.position = 'absolute';
+                links.style.top = '70px';
+                links.style.left = '0';
+                links.style.right = '0';
+                links.style.backgroundColor = 'rgba(255,249,230,0.98)';
+                links.style.padding = '24px';
+                links.style.boxShadow = '0 10px 15px -3px rgba(0,0,0,0.1)';
+            }
+        });
+        
+        displayCart();
+    </script>
+</body>
+</html>
