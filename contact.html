@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Amala Sky | Contact - Get in Touch</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; line-height: 1.6; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: #d4a017; border-radius: 4px; }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(212, 160, 23, 0.2);
+        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 800; color: #d4a017; text-decoration: none; }
+        .logo span { color: #fff; }
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .nav-links a { color: #fff; text-decoration: none; font-weight: 500; transition: color 0.3s; position: relative; }
+        .nav-links a:hover, .nav-links a.active { color: #d4a017; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: #d4a017; transition: width 0.3s; }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .cart-badge { background: #d4a017; color: #0a0a0a; border-radius: 50%; padding: 2px 8px; font-size: 0.7rem; font-weight: bold; margin-left: 5px; }
+        .btn-order { background: #d4a017; color: #0a0a0a; padding: 10px 28px; border-radius: 40px; text-decoration: none; font-weight: 700; transition: all 0.3s; }
+        .btn-order:hover { background: transparent; color: #d4a017; transform: translateY(-2px); border: 1px solid #d4a017; }
+        .mobile-menu-btn { display: none; font-size: 1.5rem; cursor: pointer; color: #fff; }
+
+        /* Page Header */
+        .page-header {
+            min-height: 40vh;
+            background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 100%), url('https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=2000');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            padding-top: 100px;
+        }
+        .page-header h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin-bottom: 16px; }
+
+        /* Contact Section */
+        .contact-section { padding: 80px 0; }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-bottom: 50px; }
+        .contact-info-card, .contact-form-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            padding: 35px;
+            border: 1px solid rgba(212, 160, 23, 0.15);
+        }
+        .contact-info-card h3, .contact-form-card h3 { font-size: 1.5rem; margin-bottom: 25px; color: #d4a017; }
+        .contact-detail { display: flex; gap: 15px; margin-bottom: 25px; }
+        .contact-detail i { font-size: 1.3rem; color: #d4a017; width: 30px; }
+        .contact-detail strong { display: block; margin-bottom: 5px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(212,160,23,0.2);
+            border-radius: 12px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+        }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #d4a017; }
+        .btn-submit {
+            background: #d4a017;
+            color: #0a0a0a;
+            padding: 14px;
+            border-radius: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            border: none;
+            transition: all 0.3s;
+        }
+        .btn-submit:hover { background: #b8860b; transform: translateY(-2px); }
+        .map-container { margin-bottom: 50px; border-radius: 24px; overflow: hidden; border: 1px solid rgba(212,160,23,0.2); }
+        .call-buttons { text-align: center; }
+        .call-buttons h3 { margin-bottom: 20px; font-size: 1.5rem; }
+        .call-buttons-grid { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .call-btn, .whatsapp-btn {
+            padding: 14px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+        .call-btn { background: rgba(212, 160, 23, 0.15); border: 1px solid rgba(212, 160, 23, 0.3); color: #d4a017; }
+        .whatsapp-btn { background: #25D366; color: #fff; }
+        .call-btn:hover, .whatsapp-btn:hover { transform: translateY(-3px); }
+
+        /* Footer */
+        .footer { background: #050505; padding: 60px 0 30px; border-top: 1px solid rgba(212, 160, 23, 0.15); }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px; }
+        .footer-col h4 { color: #d4a017; margin-bottom: 20px; }
+        .footer-col p { color: #888; margin-bottom: 10px; }
+        .footer-col a { color: #888; text-decoration: none; }
+        .footer-col a:hover { color: #d4a017; }
+        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; color: #666; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .page-header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Amala <span>Sky</span></a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="menu.html">Menu</a>
+                <a href="cart.html">Cart <span id="nav-cart-count" class="cart-badge">0</span></a>
+                <a href="contact.html" class="active">Contact</a>
+                <a href="menu.html" class="btn-order">Order Now</a>
+            </div>
+            <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container"><h1>Contact Us</h1><p>We're here to serve you 24/7</p></div>
+    </section>
+
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info-card">
+                    <h3>Get in Touch</h3>
+                    <div class="contact-detail"><i class="fas fa-phone-alt"></i><div><strong>Phone</strong><p>+234 915 555 8923</p><p>+234 905 555 8922</p></div></div>
+                    <div class="contact-detail"><i class="fab fa-whatsapp"></i><div><strong>WhatsApp</strong><p>+234 915 555 8923</p></div></div>
+                    <div class="contact-detail"><i class="fas fa-map-marker-alt"></i><div><strong>Address</strong><p>12 Victoria Aribekee Street, Lekki Phase 1, Lagos</p></div></div>
+                    <div class="contact-detail"><i class="fas fa-clock"></i><div><strong>Opening Hours</strong><p>Open 24 hours a day, 7 days a week</p></div></div>
+                    <div class="contact-detail"><i class="fab fa-instagram"></i><div><strong>Instagram</strong><p>@AMALASKYLAGOS</p></div></div>
+                </div>
+                <div class="contact-form-card">
+                    <h3>Send us a Message</h3>
+                    <form id="contact-form">
+                        <div class="form-group"><input type="text" placeholder="Your Name" required></div>
+                        <div class="form-group"><input type="email" placeholder="Email Address" required></div>
+                        <div class="form-group"><input type="tel" placeholder="Phone Number" required></div>
+                        <div class="form-group"><textarea rows="4" placeholder="Your Message..."></textarea></div>
+                        <button type="submit" class="btn-submit">Send Message →</button>
+                    </form>
+                </div>
+            </div>
+            <div class="map-container"><iframe width="100%" height="300" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=Lekki+Phase+1+Lagos+Nigeria" allowfullscreen></iframe></div>
+            <div class="call-buttons"><h3>Order by Phone</h3><div class="call-buttons-grid"><a href="tel:+2349155558923" class="call-btn"><i class="fas fa-phone"></i> Call +234 915 555 8923</a><a href="tel:+2349055558922" class="call-btn"><i class="fas fa-phone"></i> Call +234 905 555 8922</a><a href="https://wa.me/2349155558923" class="whatsapp-btn"><i class="fab fa-whatsapp"></i> WhatsApp +234 915 555 8923</a></div></div>
+        </div>
+    </section>
+
+    <footer class="footer"><div class="container"><div class="footer-grid"><div class="footer-col"><h4>Amala Sky</h4><p>Authentic Nigerian cuisine made with love. Open 24/7.</p></div><div class="footer-col"><h4>Quick Links</h4><p><a href="index.html">Home</a></p><p><a href="menu.html">Menu</a></p><p><a href="contact.html">Contact</a></p></div><div class="footer-col"><h4>Contact</h4><p><i class="fas fa-phone"></i> +234 915 555 8923</p><p><i class="fab fa-whatsapp"></i> +234 915 555 8923</p></div></div><div class="footer-bottom"><p>© 2024 Amala Sky — Authentic Nigerian Cuisine | Open 24/7</p></div></div></footer>
+
+    <script>
+        document.getElementById('contact-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = this.querySelector('input[placeholder="Your Name"]')?.value || '';
+            const phone = this.querySelector('input[placeholder="Phone Number"]')?.value || '';
+            const message = this.querySelector('textarea')?.value || '';
+            window.open(`https://wa.me/2349155558923?text=*Amala Sky Inquiry*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A%0A*Message:* ${message}`, '_blank');
+        });
+        function updateNavCartCount() { const cart = JSON.parse(localStorage.getItem('amalasky_cart') || '[]'); const count = cart.reduce((s,i) => s + i.quantity, 0); const badge = document.getElementById('nav-cart-count'); if (badge) { badge.textContent = count; badge.style.display = count > 0 ? 'inline-block' : 'none'; } }
+        document.querySelector('.mobile-menu-btn')?.addEventListener('click', function() { const l = document.querySelector('.nav-links'); if (l.style.display === 'flex') l.style.display = 'none'; else { l.style.display = 'flex'; l.style.flexDirection = 'column'; l.style.position = 'absolute'; l.style.top = '70px'; l.style.left = '0'; l.style.right = '0'; l.style.backgroundColor = '#0a0a0a'; l.style.padding = '24px'; l.style.borderBottom = '1px solid rgba(212,160,23,0.2)'; } });
+        updateNavCartCount();
+    </script>
+</body>
+</html>
