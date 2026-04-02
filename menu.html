@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Amala Sky | Menu - Authentic Nigerian Cuisine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Amala <span>Sky</span></a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="menu.html" class="active">Menu</a>
+                <a href="cart.html">Cart <span id="nav-cart-count" class="cart-badge">0</span></a>
+                <a href="contact.html">Contact</a>
+                <a href="menu.html" class="btn-order">Order Now</a>
+            </div>
+            <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>Our Menu</h1>
+            <p>Authentic Nigerian dishes made fresh daily</p>
+        </div>
+    </section>
+
+    <section class="menu-section">
+        <div class="container">
+            <!-- Swallow Section -->
+            <div class="menu-category">
+                <h2 class="category-header">🍚 Swallow</h2>
+                <div class="menu-grid" id="swallow-grid"></div>
+            </div>
+
+            <!-- Soup Section -->
+            <div class="menu-category">
+                <h2 class="category-header">🍲 Soup</h2>
+                <div class="menu-grid" id="soup-grid"></div>
+            </div>
+
+            <!-- Protein Section -->
+            <div class="menu-category">
+                <h2 class="category-header">🍗 Protein</h2>
+                <div class="menu-grid" id="protein-grid"></div>
+            </div>
+
+            <!-- Takeaway Pack Section -->
+            <div class="menu-category">
+                <h2 class="category-header">📦 Takeaway Pack</h2>
+                <div class="menu-grid" id="takeaway-grid"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col"><h4>Amala Sky</h4><p>Authentic Nigerian cuisine made with love. Open 24/7.</p></div>
+                <div class="footer-col"><h4>Quick Links</h4><p><a href="index.html">Home</a></p><p><a href="menu.html">Menu</a></p><p><a href="contact.html">Contact</a></p></div>
+                <div class="footer-col"><h4>Contact</h4><p><i class="fas fa-phone"></i> +234 915 555 8923</p><p><i class="fab fa-whatsapp"></i> +234 915 555 8923</p><p><i class="fas fa-map-marker-alt"></i> Lekki Phase 1, Lagos</p></div>
+            </div>
+            <div class="footer-bottom"><p>© 2024 Amala Sky — Authentic Nigerian Cuisine | Open 24/7</p></div>
+        </div>
+    </footer>
+
+    <script src="cart-manager.js"></script>
+    <script>
+        const menuData = {
+            swallow: [
+                { name: "Amala", price: 1500 },
+                { name: "Eba", price: 1000 },
+                { name: "Fufu", price: 1000 },
+                { name: "Semo", price: 1000 },
+                { name: "Pounded Yam", price: 2500 },
+                { name: "Starch", price: 1000 },
+                { name: "Eko (Cornmeal)", price: 500 }
+            ],
+            soup: [
+                { name: "Extra Ewedu", price: 500 },
+                { name: "Extra Gbejiri", price: 500 },
+                { name: "Efo Riiro", price: 4000 },
+                { name: "Egusi Soup", price: 4000 },
+                { name: "Banga Soup", price: 5000 },
+                { name: "Okro Soup", price: 3000 },
+                { name: "Oha Soup", price: 5000 },
+                { name: "Afang Soup", price: 5000 },
+                { name: "Ogbono Soup", price: 4500 },
+                { name: "Bitterleaf Soup", price: 5000 }
+            ],
+            protein: [
+                { name: "Goat Meat", price: 5000 }, { name: "Ponmo", price: 1000 }, { name: "Beef", price: 2000 },
+                { name: "Assorted Meat", price: 2000 }, { name: "Fresh Catfish", price: 5500 }, { name: "Smoked Catfish", price: 4000 },
+                { name: "Snail", price: 8000 }, { name: "Croaker Fish", price: 7000 }, { name: "Gizzard", price: 3000 },
+                { name: "Turkey", price: 7000 }, { name: "Small Turkey", price: 3500 }, { name: "Peppered Turkey (3pcs)", price: 9000 },
+                { name: "Chicken", price: 5500 }, { name: "Peppered Chicken Wings (3)", price: 9000 }, { name: "Chicken Wing", price: 3000 },
+                { name: "Egg", price: 500 }, { name: "Panla (Dry Fish)", price: 3000 }, { name: "Titus Fish", price: 4000 },
+                { name: "Grilled Catfish", price: 18000 }, { name: "Asun (Spicy Goat)", price: 5000 }, { name: "Cow Leg", price: 4000 },
+                { name: "Cow Head Ponmo", price: 2900 }, { name: "Hake Fish", price: 4000 }
+            ],
+            takeaway: [
+                { name: "Small Pack", price: 300 },
+                { name: "Medium Pack", price: 800 },
+                { name: "Large Pack", price: 2000 }
+            ]
+        };
+
+        function renderMenu(items, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = items.map(item => `
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-price">₦${item.price.toLocaleString()}</div>
+                    </div>
+                    <button class="add-btn" onclick="addToCart('${item.name.replace(/'/g, "\\'")}', ${item.price})">+</button>
+                </div>
+            `).join('');
+        }
+
+        renderMenu(menuData.swallow, 'swallow-grid');
+        renderMenu(menuData.soup, 'soup-grid');
+        renderMenu(menuData.protein, 'protein-grid');
+        renderMenu(menuData.takeaway, 'takeaway-grid');
+
+        document.querySelector('.mobile-menu-btn')?.addEventListener('click', function() {
+            const links = document.querySelector('.nav-links');
+            if (links.style.display === 'flex') links.style.display = 'none';
+            else {
+                links.style.display = 'flex';
+                links.style.flexDirection = 'column';
+                links.style.position = 'absolute';
+                links.style.top = '70px';
+                links.style.left = '0';
+                links.style.right = '0';
+                links.style.backgroundColor = 'rgba(255,249,230,0.98)';
+                links.style.padding = '24px';
+                links.style.boxShadow = '0 10px 15px -3px rgba(0,0,0,0.1)';
+            }
+        });
+    </script>
+</body>
+</html>
