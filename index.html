@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Amala Sky | Authentic Nigerian Cuisine - Open 24/7</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4a017;
+            border-radius: 4px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(212, 160, 23, 0.2);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #d4a017;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #d4a017;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #d4a017;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .cart-badge {
+            background: #d4a017;
+            color: #0a0a0a;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .btn-order {
+            background: #d4a017;
+            color: #0a0a0a;
+            padding: 10px 28px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+            border: 1px solid #d4a017;
+        }
+
+        .btn-order:hover {
+            background: transparent;
+            color: #d4a017;
+            transform: translateY(-2px);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 100%), url('https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=2000');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.4) 100%);
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            color: #d4a017;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .hero-badges {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .hero-badge {
+            background: rgba(212, 160, 23, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(212, 160, 23, 0.3);
+            font-weight: 500;
+        }
+
+        .hero-badge i {
+            color: #d4a017;
+            margin-right: 8px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: #d4a017;
+            color: #0a0a0a;
+            padding: 16px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s;
+            display: inline-block;
+            border: 1px solid #d4a017;
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: #d4a017;
+            transform: translateY(-3px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid #d4a017;
+            color: #d4a017;
+            padding: 16px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            background: #d4a017;
+            color: #0a0a0a;
+            transform: translateY(-3px);
+        }
+
+        /* Info Section */
+        .info-section {
+            padding: 80px 0;
+            background: #0f0f0f;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            padding: 35px;
+            border-radius: 24px;
+            text-align: center;
+            border: 1px solid rgba(212, 160, 23, 0.15);
+            transition: all 0.3s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(212, 160, 23, 0.4);
+        }
+
+        .info-card i {
+            font-size: 2.5rem;
+            color: #d4a017;
+            margin-bottom: 20px;
+        }
+
+        .info-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .info-card p {
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        .info-card .phone {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #d4a017;
+            margin-top: 15px;
+        }
+
+        /* Featured Dishes */
+        .featured-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #0a0a0a 0%, #141414 100%);
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: #d4a017;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 60px;
+            font-size: 1.1rem;
+            margin-top: 30px;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .featured-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            overflow: hidden;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid rgba(212, 160, 23, 0.15);
+        }
+
+        .featured-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(212, 160, 23, 0.4);
+        }
+
+        .featured-image {
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .featured-card h3 {
+            font-size: 1.5rem;
+            margin: 25px 0 10px;
+        }
+
+        .featured-card p {
+            color: #aaa;
+            padding: 0 20px;
+        }
+
+        .featured-price {
+            display: inline-block;
+            margin: 20px 0 25px;
+            padding: 8px 20px;
+            background: rgba(212, 160, 23, 0.15);
+            border-radius: 30px;
+            color: #d4a017;
+            font-weight: 700;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+            text-align: center;
+            position: relative;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><path fill="white" d="M50,0 L61,35 L100,35 L70,55 L82,90 L50,70 L18,90 L30,55 L0,35 L39,35 Z"/></svg>');
+            background-repeat: repeat;
+            background-size: 40px;
+        }
+
+        .cta-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section .btn-primary {
+            background: #0a0a0a;
+            border-color: #0a0a0a;
+            color: #d4a017;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section .btn-primary:hover {
+            background: transparent;
+            color: #0a0a0a;
+            border-color: #0a0a0a;
+        }
+
+        /* Footer */
+        .footer {
+            background: #050505;
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(212, 160, 23, 0.15);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h4 {
+            color: #d4a017;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-col p {
+            color: #888;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .footer-col a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-col a:hover {
+            color: #d4a017;
+        }
+
+        .footer-col i {
+            margin-right: 10px;
+            width: 25px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .hero-badges {
+                gap: 15px;
+            }
+            .hero-badge {
+                padding: 8px 16px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Amala <span>Sky</span></a>
+            <div class="nav-links">
+                <a href="index.html" class="active">Home</a>
+                <a href="menu.html">Menu</a>
+                <a href="cart.html">Cart <span id="nav-cart-count" class="cart-badge">0</span></a>
+                <a href="contact.html">Contact</a>
+                <a href="menu.html" class="btn-order">Order Now</a>
+            </div>
+            <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Amala <span>Sky</span></h1>
+                <p>Authentic Nigerian cuisine made with love. Open 24 hours — serving the best Amala, Eba, Fufu, and traditional soups in Lekki.</p>
+                <div class="hero-badges">
+                    <div class="hero-badge"><i class="fas fa-clock"></i> Open 24/7</div>
+                    <div class="hero-badge"><i class="fas fa-motorcycle"></i> Free Delivery</div>
+                    <div class="hero-badge"><i class="fas fa-utensils"></i> Authentic Taste</div>
+                    <div class="hero-badge"><i class="fas fa-star"></i> 4.8 ★ (500+ Reviews)</div>
+                </div>
+                <div class="hero-buttons">
+                    <a href="menu.html" class="btn-primary">Explore Menu →</a>
+                    <a href="contact.html" class="btn-secondary">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="info-section">
+        <div class="container">
+            <div class="info-grid">
+                <div class="info-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Open 24 Hours</h3>
+                    <p>We serve you day and night, 7 days a week. Never go hungry!</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-phone-alt"></i>
+                    <h3>Call to Order</h3>
+                    <p>Order via phone or WhatsApp for quick delivery</p>
+                    <div class="phone">+234 915 555 8923</div>
+                    <div class="phone">+234 905 555 8922</div>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Visit Us</h3>
+                    <p>12 Victoria Aribekee Street,<br>Lekki Phase 1, Lagos, Nigeria</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-section">
+        <div class="container">
+            <h2 class="section-title">Signature Dishes</h2>
+            <p class="section-subtitle">Customer favorites you must try</p>
+            <div class="featured-grid">
+                <div class="featured-card">
+                    <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1585937421612-70a008356fbe?q=80&w=600');"></div>
+                    <h3>Amala & Ewedu</h3>
+                    <p>Our signature yam flour swallow served with authentic ewedu soup</p>
+                    <div class="featured-price">From ₦1,500</div>
+                </div>
+                <div class="featured-card">
+                    <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=600');"></div>
+                    <h3>Grilled Catfish</h3>
+                    <p>Fresh catfish grilled to perfection with our secret spice blend</p>
+                    <div class="featured-price">₦18,000</div>
+                </div>
+                <div class="featured-card">
+                    <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1604909052743-94e838986d24?q=80&w=600');"></div>
+                    <h3>Peppered Chicken</h3>
+                    <p>Spicy, flavorful chicken wings - a customer favorite</p>
+                    <div class="featured-price">₦9,000</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Satisfy Your Cravings?</h2>
+            <p>Browse our full menu and place your order for delivery or pickup</p>
+            <a href="menu.html" class="btn-primary">View Full Menu →</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Amala Sky</h4>
+                    <p>Authentic Nigerian cuisine made with love. Open 24/7.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <p><a href="index.html">Home</a></p>
+                    <p><a href="menu.html">Menu</a></p>
+                    <p><a href="contact.html">Contact</a></p>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-phone"></i> +234 915 555 8923</p>
+                    <p><i class="fab fa-whatsapp"></i> +234 915 555 8923</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Lekki Phase 1, Lagos</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Follow Us</h4>
+                    <p><i class="fab fa-instagram"></i> @AMALASKYLAGOS</p>
+                    <p><i class="fab fa-facebook"></i> Amala Sky Lagos</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 Amala Sky — Authentic Nigerian Cuisine | Open 24/7</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="cart-manager.js"></script>
+    <script>
+        document.querySelector('.mobile-menu-btn')?.addEventListener('click', function() {
+            const links = document.querySelector('.nav-links');
+            if (links.style.display === 'flex') links.style.display = 'none';
+            else {
+                links.style.display = 'flex';
+                links.style.flexDirection = 'column';
+                links.style.position = 'absolute';
+                links.style.top = '70px';
+                links.style.left = '0';
+                links.style.right = '0';
+                links.style.backgroundColor = '#0a0a0a';
+                links.style.padding = '24px';
+                links.style.borderBottom = '1px solid rgba(212,160,23,0.2)';
+                links.style.zIndex = '1000';
+            }
+        });
+        
+        function updateNavCartCount() {
+            const cart = JSON.parse(localStorage.getItem('amalasky_cart') || '[]');
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const badge = document.getElementById('nav-cart-count');
+            if (badge) {
+                badge.textContent = count;
+                badge.style.display = count > 0 ? 'inline-block' : 'none';
+            }
+        }
+        updateNavCartCount();
+        window.addEventListener('storage', updateNavCartCount);
+    </script>
+</body>
+</html>
