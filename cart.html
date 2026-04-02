@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Amala Sky | Cart - Order Summary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; line-height: 1.6; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: #d4a017; border-radius: 4px; }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(212, 160, 23, 0.2);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #d4a017;
+            text-decoration: none;
+        }
+        .logo span { color: #fff; }
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .nav-links a { color: #fff; text-decoration: none; font-weight: 500; transition: color 0.3s; position: relative; }
+        .nav-links a:hover, .nav-links a.active { color: #d4a017; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: #d4a017; transition: width 0.3s; }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .cart-badge { background: #d4a017; color: #0a0a0a; border-radius: 50%; padding: 2px 8px; font-size: 0.7rem; font-weight: bold; margin-left: 5px; }
+        .btn-order { background: #d4a017; color: #0a0a0a; padding: 10px 28px; border-radius: 40px; text-decoration: none; font-weight: 700; transition: all 0.3s; }
+        .btn-order:hover { background: transparent; color: #d4a017; transform: translateY(-2px); border: 1px solid #d4a017; }
+        .mobile-menu-btn { display: none; font-size: 1.5rem; cursor: pointer; color: #fff; }
+
+        /* Page Header */
+        .page-header {
+            min-height: 40vh;
+            background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 100%), url('https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=2000');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            padding-top: 100px;
+        }
+        .page-header h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin-bottom: 16px; }
+
+        /* Cart Section */
+        .cart-section { padding: 80px 0; }
+        .cart-grid { display: grid; grid-template-columns: 1fr 380px; gap: 40px; }
+        
+        .cart-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(212, 160, 23, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .cart-item-info h4 { font-size: 1.1rem; margin-bottom: 5px; }
+        .cart-item-price { color: #aaa; font-size: 0.85rem; }
+        .cart-item-actions { display: flex; align-items: center; gap: 20px; }
+        .quantity-control { display: flex; align-items: center; gap: 12px; }
+        .quantity-control button {
+            background: rgba(212, 160, 23, 0.2);
+            border: 1px solid rgba(212, 160, 23, 0.3);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #d4a017;
+        }
+        .quantity-control span { min-width: 30px; text-align: center; }
+        .remove-btn { background: transparent; border: none; font-size: 1.2rem; cursor: pointer; color: #ff6b6b; }
+        .cart-item-total { font-weight: 700; color: #d4a017; min-width: 100px; text-align: right; }
+
+        .order-summary-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            padding: 30px;
+            border: 1px solid rgba(212, 160, 23, 0.15);
+            position: sticky;
+            top: 100px;
+        }
+        .order-summary-card h3 { font-size: 1.3rem; margin-bottom: 20px; color: #d4a017; }
+        .summary-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .summary-row.total { border-bottom: none; font-weight: 700; font-size: 1.2rem; padding-top: 15px; color: #d4a017; }
+        .btn-checkout-full {
+            background: #d4a017;
+            color: #0a0a0a;
+            border: none;
+            padding: 14px;
+            border-radius: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+        .btn-checkout-full:hover { background: #b8860b; transform: translateY(-2px); }
+        .btn-continue { display: block; text-align: center; margin-top: 15px; color: #aaa; text-decoration: none; }
+        .btn-continue:hover { color: #d4a017; }
+        .empty-cart { text-align: center; padding: 60px; background: rgba(255,255,255,0.03); border-radius: 24px; }
+        .empty-cart a { color: #d4a017; text-decoration: none; }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: #0a0a0a;
+            border: 1px solid rgba(212, 160, 23, 0.2);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .modal-title { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 20px; text-align: center; }
+        .order-summary { margin: 20px 0; padding: 20px; background: rgba(255,255,255,0.03); border-radius: 16px; }
+        .summary-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .summary-total { display: flex; justify-content: space-between; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(212,160,23,0.3); font-weight: 700; font-size: 1.2rem; }
+        .form-group { margin-bottom: 20px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(212,160,23,0.2);
+            border-radius: 12px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+        }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: #d4a017; }
+        .modal-actions { display: flex; gap: 15px; margin-top: 25px; }
+        .modal-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 40px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .modal-btn.cancel { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; }
+        .modal-btn.primary { background: #d4a017; color: #0a0a0a; }
+
+        /* Footer */
+        .footer { background: #050505; padding: 60px 0 30px; border-top: 1px solid rgba(212, 160, 23, 0.15); }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px; }
+        .footer-col h4 { color: #d4a017; margin-bottom: 20px; }
+        .footer-col p { color: #888; margin-bottom: 10px; }
+        .footer-col a { color: #888; text-decoration: none; }
+        .footer-col a:hover { color: #d4a017; }
+        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; color: #666; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .cart-grid { grid-template-columns: 1fr; }
+            .page-header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Amala <span>Sky</span></a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="menu.html">Menu</a>
+                <a href="cart.html" class="active">Cart <span id="nav-cart-count" class="cart-badge">0</span></a>
+                <a href="contact.html">Contact</a>
+                <a href="menu.html" class="btn-order">Order Now</a>
+            </div>
+            <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container"><h1>Your Cart</h1><p>Review your order before checkout</p></div>
+    </section>
+
+    <section class="cart-section">
+        <div class="container">
+            <div class="cart-grid">
+                <div class="cart-items" id="cart-items"><div class="empty-cart">Your cart is empty. <a href="menu.html">Browse Menu →</a></div></div>
+                <div class="order-summary-card">
+                    <h3>Order Summary</h3>
+                    <div class="summary-row"><span>Subtotal</span><span id="subtotal">₦0</span></div>
+                    <div class="summary-row"><span>Delivery Fee</span><span id="delivery-fee">₦0</span></div>
+                    <div class="summary-row total"><span>Total</span><span id="total">₦0</span></div>
+                    <button class="btn-checkout-full" onclick="proceedToCheckout()">Proceed to Checkout →</button>
+                    <a href="menu.html" class="btn-continue">Continue Shopping</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="checkout-modal" class="modal"><div class="modal-content"><h2 class="modal-title">Complete Your Order</h2><div id="order-summary" class="order-summary"></div><div class="form-group"><input type="text" id="customer-name" placeholder="Your Full Name" required></div><div class="form-group"><input type="tel" id="customer-phone" placeholder="Phone Number" required></div><div class="form-group"><select id="order-type"><option value="Delivery">Delivery</option><option value="Pickup">Pickup</option></select></div><div class="form-group" id="address-field"><input type="text" id="delivery-address" placeholder="Delivery Address"></div><div class="modal-actions"><button class="modal-btn cancel" onclick="closeCheckout()">Cancel</button><button class="modal-btn primary" onclick="submitOrder()">Send to WhatsApp →</button></div></div></div>
+
+    <footer class="footer"><div class="container"><div class="footer-grid"><div class="footer-col"><h4>Amala Sky</h4><p>Authentic Nigerian cuisine made with love. Open 24/7.</p></div><div class="footer-col"><h4>Quick Links</h4><p><a href="index.html">Home</a></p><p><a href="menu.html">Menu</a></p><p><a href="contact.html">Contact</a></p></div><div class="footer-col"><h4>Contact</h4><p><i class="fas fa-phone"></i> +234 915 555 8923</p><p><i class="fab fa-whatsapp"></i> +234 915 555 8923</p></div></div><div class="footer-bottom"><p>© 2024 Amala Sky — Authentic Nigerian Cuisine | Open 24/7</p></div></div></footer>
+
+    <script>
+        const WHATSAPP_NUMBER = '2349155558923';
+
+        function getCart() { return JSON.parse(localStorage.getItem('amalasky_cart') || '[]'); }
+        function saveCart(cart) { localStorage.setItem('amalasky_cart', JSON.stringify(cart)); updateNavCartCount(); }
+
+        function displayCart() {
+            const cart = getCart();
+            const container = document.getElementById('cart-items');
+            if (cart.length === 0) { container.innerHTML = '<div class="empty-cart">Your cart is empty. <a href="menu.html">Browse Menu →</a></div>'; updateSummary(0); return; }
+            
+            const grouped = {};
+            cart.forEach(item => { if (!grouped[item.name]) grouped[item.name] = { quantity: 0, price: item.price }; grouped[item.name].quantity += item.quantity; });
+            
+            let subtotal = 0;
+            let html = '';
+            for (const [name, data] of Object.entries(grouped)) {
+                const itemTotal = data.price * data.quantity;
+                subtotal += itemTotal;
+                html += `<div class="cart-item"><div class="cart-item-info"><h4>${name}</h4><div class="cart-item-price">₦${data.price.toLocaleString()} each</div></div><div class="cart-item-actions"><div class="quantity-control"><button onclick="updateQuantity('${name.replace(/'/g, "\\'")}', ${data.price}, -1)">-</button><span>${data.quantity}</span><button onclick="updateQuantity('${name.replace(/'/g, "\\'")}', ${data.price}, 1)">+</button></div><div class="cart-item-total">₦${itemTotal.toLocaleString()}</div><button class="remove-btn" onclick="removeItem('${name.replace(/'/g, "\\'")}')">🗑️</button></div></div>`;
+            }
+            container.innerHTML = html;
+            updateSummary(subtotal);
+        }
+
+        function updateSummary(subtotal) { document.getElementById('subtotal').innerHTML = `₦${subtotal.toLocaleString()}`; document.getElementById('delivery-fee').innerHTML = `₦0`; document.getElementById('total').innerHTML = `₦${subtotal.toLocaleString()}`; }
+        function updateQuantity(name, price, change) { let cart = getCart(); const idx = cart.findIndex(i => i.name === name); if (idx !== -1) { const newQty = cart[idx].quantity + change; if (newQty <= 0) cart.splice(idx, 1); else cart[idx].quantity = newQty; } else if (change > 0) cart.push({ name, price, quantity: 1 }); saveCart(cart); displayCart(); }
+        function removeItem(name) { let cart = getCart(); cart = cart.filter(i => i.name !== name); saveCart(cart); displayCart(); }
+        function updateNavCartCount() { const cart = getCart(); const count = cart.reduce((s,i) => s + i.quantity, 0); const badge = document.getElementById('nav-cart-count'); if (badge) { badge.textContent = count; badge.style.display = count > 0 ? 'inline-block' : 'none'; } }
+        function proceedToCheckout() { if (getCart().length === 0) { alert('Your cart is empty'); return; } openCheckout(); }
+        function openCheckout() { const cart = getCart(); const modal = document.getElementById('checkout-modal'); const summaryDiv = document.getElementById('order-summary'); const grouped = {}; cart.forEach(i => { if (!grouped[i.name]) grouped[i.name] = { quantity: 0, price: i.price }; grouped[i.name].quantity += i.quantity; }); let total = 0, html = ''; for (const [name, data] of Object.entries(grouped)) { const itemTotal = data.price * data.quantity; total += itemTotal; html += `<div class="summary-item"><span>${data.quantity}x ${name}</span><span>₦${itemTotal.toLocaleString()}</span></div>`; } html += `<div class="summary-total"><span>Total</span><span>₦${total.toLocaleString()}</span></div>`; summaryDiv.innerHTML = html; modal.classList.add('active'); }
+        function closeCheckout() { document.getElementById('checkout-modal').classList.remove('active'); }
+        function submitOrder() {
+            const name = document.getElementById('customer-name').value.trim();
+            const phone = document.getElementById('customer-phone').value.trim();
+            const orderType = document.getElementById('order-type').value;
+            const address = document.getElementById('delivery-address').value.trim();
+            if (!name || !phone) { alert('Please enter your name and phone number'); return; }
+            if (orderType === 'Delivery' && !address) { alert('Please enter your delivery address'); return; }
+            const cart = getCart(); const grouped = {}; cart.forEach(i => { if (!grouped[i.name]) grouped[i.name] = { quantity: 0, price: i.price }; grouped[i.name].quantity += i.quantity; });
+            let orderDetails = '', total = 0;
+            for (const [name, data] of Object.entries(grouped)) { const itemTotal = data.price * data.quantity; total += itemTotal; orderDetails += `${data.quantity}x ${name} - ₦${itemTotal.toLocaleString()}%0A`; }
+            let message = `*AMALA SKY - NEW ORDER*%0A%0A*Customer:* ${name}%0A*Phone:* ${phone}%0A*Order Type:* ${orderType}%0A${orderType === 'Delivery' ? `*Delivery Address:* ${address}%0A` : ''}%0A*ORDER DETAILS:*%0A${orderDetails}%0A*TOTAL: ₦${total.toLocaleString()}*%0A%0AThank you for choosing Amala Sky! 🍛`;
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+            localStorage.removeItem('amalasky_cart'); updateNavCartCount(); closeCheckout(); displayCart();
+        }
+        document.getElementById('order-type')?.addEventListener('change', function() { document.getElementById('address-field').style.display = this.value === 'Delivery' ? 'block' : 'none'; });
+        document.getElementById('checkout-modal')?.addEventListener('click', function(e) { if (e.target === this) closeCheckout(); });
+        document.querySelector('.mobile-menu-btn')?.addEventListener('click', function() { const l = document.querySelector('.nav-links'); if (l.style.display === 'flex') l.style.display = 'none'; else { l.style.display = 'flex'; l.style.flexDirection = 'column'; l.style.position = 'absolute'; l.style.top = '70px'; l.style.left = '0'; l.style.right = '0'; l.style.backgroundColor = '#0a0a0a'; l.style.padding = '24px'; l.style.borderBottom = '1px solid rgba(212,160,23,0.2)'; } });
+        displayCart(); updateNavCartCount();
+    </script>
+</body>
+</html>
